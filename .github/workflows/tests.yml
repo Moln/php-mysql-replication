@@ -19,7 +19,6 @@ jobs:
           MYSQL_DATABASE: mysqlreplication_test
         ports:
           - 3306/tcp
-        options: "--default-authentication-plugin=mysql_native_password"
 
     strategy:
       matrix:
