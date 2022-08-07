@@ -3,11 +3,68 @@ declare(strict_types=1);
 
 namespace MySQLReplication\Cache;
 
-use MySQLReplication\Config\Config;
+use Composer\InstalledVersions;
 use Psr\SimpleCache\CacheInterface;
 
-class ArrayCache implements CacheInterface
-{
+if (class_exists(InstalledVersions::class) && version_compare(InstalledVersions::getVersion("psr/simple-cache"), '3.0.0', ">=")) {
+    class ArrayCache implements CacheInterface
+    {
+        use ArrayCacheTrait;
+
+        /**
+         * @inheritDoc
+         */
+        public function get(string $key, $default = null): mixed
+        {
+            return $this->has($key) ? $this->tableMapCache[$key] : $default;
+        }
+
+        /**
+         * @inheritDoc
+         */
+        public function getMultiple(iterable $keys, $default = null): iterable
+        {
+            $data = [];
+            foreach ($keys as $key) {
+                if ($this->has($key)) {
+                    $data[$key] = $this->tableMapCache[$key];
+                }
+            }
+
+            return [] !== $data ? $data : $default;
+        }
+    }
+} else {
+    class ArrayCache implements CacheInterface
+    {
+        use ArrayCacheTrait;
+
+        /**
+         * @inheritDoc
+         */
+        public function get($key, $default = null)
+        {
+            return $this->has($key) ? $this->tableMapCache[$key] : $default;
+        }
+
+        /**
+         * @inheritDoc
+         */
+        public function getMultiple($keys, $default = null)
+        {
+            $data = [];
+            foreach ($keys as $key) {
+                if ($this->has($key)) {
+                    $data[$key] = $this->tableMapCache[$key];
+                }
+            }
+
+            return [] !== $data ? $data : $default;
+        }
+    }
+}
+
+trait ArrayCacheTrait {
     private $tableMapCache = [];
 
     /**
@@ -20,13 +77,6 @@ class ArrayCache implements CacheInterface
         $this->tableCacheSize = $tableCacheSize;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function get($key, $default = null)
-    {
-        return $this->has($key) ? $this->tableMapCache[$key] : $default;
-    }
 
     /**
      * @inheritDoc
@@ -44,21 +94,6 @@ class ArrayCache implements CacheInterface
         $this->tableMapCache = [];
 
         return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMultiple($keys, $default = null)
-    {
-        $data = [];
-        foreach ($keys as $key) {
-            if ($this->has($key)) {
-                $data[$key] = $this->tableMapCache[$key];
-            }
-        }
-
-        return [] !== $data ? $data : $default;
     }
 
     /**
