@@ -5,7 +5,7 @@ on:
       - master
   pull_request:
     branches:
-      - *
+      - "**"
 jobs:
   build:
 
@@ -32,7 +32,7 @@ jobs:
         run: |
           echo -e "\n[mysqld]\ndefault_authentication_plugin=mysql_native_password\nserver-id=1\nbinlog_format=row\nlog_bin=/var/log/mysql/mysql-bin.log" | sudo tee -a /etc/mysql/my.cnf
           sudo /etc/init.d/mysql start
-          mysql -uroot -e "show variables like 'ndefault_authentication%';"
+          mysql -uroot -proot -e "show variables like 'ndefault_authentication%';"
           mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -proot
 
       - name: Setup PHP, with composer and extensions
