@@ -17,7 +17,7 @@ class Socket implements SocketInterface
 
     public function isConnected(): bool
     {
-        return is_resource($this->socket);
+        return is_resource($this->socket) || $this->socket instanceof \Socket;
     }
 
     public function connectToStream(string $host, int $port): void

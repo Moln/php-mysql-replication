@@ -24,6 +24,7 @@ class Config implements JsonSerializable
     private $tableCacheSize;
     private $custom;
     private $heartbeatPeriod;
+    private $retry;
 
     public function __construct(
         string $user,
@@ -42,7 +43,8 @@ class Config implements JsonSerializable
         array $databasesOnly,
         int $tableCacheSize,
         array $custom,
-        float $heartbeatPeriod
+        float $heartbeatPeriod,
+        int $retry = 0
     ) {
         $this->user = $user;
         $this->host = $host;
@@ -61,6 +63,7 @@ class Config implements JsonSerializable
         $this->tableCacheSize = $tableCacheSize;
         $this->custom = $custom;
         $this->heartbeatPeriod = $heartbeatPeriod;
+        $this->retry = $retry;
     }
 
     /**
@@ -218,6 +221,11 @@ class Config implements JsonSerializable
     public function getHeartbeatPeriod(): float
     {
         return $this->heartbeatPeriod;
+    }
+
+    public function getRetry(): int
+    {
+        return $this->retry;
     }
 
     public function jsonSerialize()

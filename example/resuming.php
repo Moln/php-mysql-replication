@@ -7,22 +7,28 @@ error_reporting(E_ALL);
 date_default_timezone_set('UTC');
 include __DIR__ . '/../vendor/autoload.php';
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use MySQLReplication\BinLog\BinLogCurrent;
 use MySQLReplication\Config\ConfigBuilder;
 use MySQLReplication\Event\DTO\EventDTO;
 use MySQLReplication\Event\EventSubscribers;
 use MySQLReplication\MySQLReplicationFactory;
 
+$logger = new Logger("app", [new StreamHandler(STDOUT)]);
+BinLogBootstrap::clear();
 /**
  * Your db configuration @see ConfigBuilder for more options
  */
 $binLogStream = new MySQLReplicationFactory(
     BinLogBootstrap::startFromPosition(new ConfigBuilder())
-        ->withUser('root')
-        ->withHost('127.0.0.1')
+        ->withUser('pma')
+        ->withHost('192.168.80.159')
         ->withPort(3306)
-        ->withPassword('root')
-        ->build()
+        ->withPassword('123456')
+        ->build(),
+    null, null, null, null,
+    $logger
 );
 
 /**
@@ -69,6 +75,10 @@ class BinLogBootstrap
             self::$fileAndPath = sys_get_temp_dir() . '/bin-log-replicator-last-position';
         }
         return self::$fileAndPath;
+    }
+
+    public static function clear() {
+        unlink(self::getFileAndPath());
     }
 
     /**

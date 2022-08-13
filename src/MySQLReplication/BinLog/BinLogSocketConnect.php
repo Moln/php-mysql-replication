@@ -52,7 +52,16 @@ class BinLogSocketConnect
         $this->socket = $socket;
         $this->binLogCurrent = new BinLogCurrent();
 
-        $this->socket->connectToStream($config->getHost(), $config->getPort());
+    }
+
+    public function isConnected(): bool
+    {
+        return $this->socket->isConnected();
+    }
+
+    public function connect(): void
+    {
+        $this->socket->connectToStream($this->config->getHost(), $this->config->getPort());
         $this->binLogServerInfo = BinLogServerInfo::parsePackage(
             $this->getResponse(false),
             $this->repository->getVersion()
@@ -275,8 +284,9 @@ class BinLogSocketConnect
      */
     private function setBinLogDump(): void
     {
-        $binFilePos = $this->config->getBinLogPosition();
-        $binFileName = $this->config->getBinLogFileName();
+        $binLogCurrent = $this->binLogCurrent;
+        $binFilePos = $binLogCurrent->getBinLogPosition() ?: $this->config->getBinLogPosition();
+        $binFileName = $binLogCurrent->getBinFileName() ?: $this->config->getBinLogFileName();
         if (0 === $binFilePos && '' === $binFileName) {
             $masterStatusDTO = $this->repository->getMasterStatus();
             $binFilePos = $masterStatusDTO->getPosition();
@@ -292,8 +302,8 @@ class BinLogSocketConnect
         $this->socket->writeToSocket($data);
         $this->getResponse();
 
-        $this->binLogCurrent->setBinLogPosition($binFilePos);
-        $this->binLogCurrent->setBinFileName($binFileName);
+        $binLogCurrent->setBinLogPosition($binFilePos);
+        $binLogCurrent->setBinFileName($binFileName);
     }
 
     public function getBinLogCurrent(): BinLogCurrent
