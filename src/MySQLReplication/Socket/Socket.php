@@ -12,7 +12,7 @@ class Socket implements SocketInterface
         $this->close();
     }
 
-    public function close()
+    public function close(): void
     {
         if ($this->isConnected()) {
             socket_shutdown($this->socket);

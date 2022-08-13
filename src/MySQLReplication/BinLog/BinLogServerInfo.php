@@ -17,6 +17,7 @@ class BinLogServerInfo
     {
         $i = 0;
         $length = strlen($data);
+        $serverInfo = [];
         $serverInfo['protocol_version'] = ord($data[$i]);
         ++$i;
 

@@ -163,7 +163,9 @@ class MySQLReplicationFactory
                     }
                 } catch (\Throwable $e) {
                     $this->logger->warning("[MysqlReplication] Connect error:" . $e->getMessage(), ['exception' => $e]);
-                    $this->socket->close();
+                    if (method_exists($this->socket, 'close')) {
+                        $this->socket->close();
+                    }
                     sleep(1);
                     continue;
                 }
@@ -175,7 +177,10 @@ class MySQLReplicationFactory
                 }
             } catch (SocketException $e) {
                 $this->logger->warning("[MysqlReplication] Connection lost: " . $e->getMessage(), ['exception' => $e]);
-                $this->socket->close();
+
+                if (method_exists($this->socket, 'close')) {
+                    $this->socket->close();
+                }
             }
         }
     }
