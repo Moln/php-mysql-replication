@@ -32,6 +32,7 @@ class ConfigTest extends BaseTest
             'tableCacheSize' => 777,
             'custom' => [['random' => 'data']],
             'heartbeatPeriod' => 69,
+            'retry' => -1,
         ];
 
         $config = new Config(
@@ -71,6 +72,7 @@ class ConfigTest extends BaseTest
         self::assertSame($expected['custom'], $config->getCustom());
         self::assertSame($expected['heartbeatPeriod'], $config->getHeartbeatPeriod());
         self::assertSame($expected['databasesOnly'], $config->getDatabasesOnly());
+        self::assertSame($expected['retry'], $config->getRetry());
 
         $config->validate();
     }
