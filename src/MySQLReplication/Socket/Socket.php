@@ -9,10 +9,16 @@ class Socket implements SocketInterface
 
     public function __destruct()
     {
+        $this->close();
+    }
+
+    public function close()
+    {
         if ($this->isConnected()) {
             socket_shutdown($this->socket);
             socket_close($this->socket);
         }
+        $this->socket = null;
     }
 
     public function isConnected(): bool

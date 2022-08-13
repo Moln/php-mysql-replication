@@ -22,6 +22,7 @@ class ConfigBuilder
     private $tableCacheSize = 128;
     private $custom = [];
     private $heartbeatPeriod = 0.0;
+    private $retry = 0;
 
     public function withUser(string $user): self
     {
@@ -147,6 +148,13 @@ class ConfigBuilder
         return $this;
     }
 
+    public function withRetry(int $retry): self
+    {
+        $this->retry = $retry;
+
+        return $this;
+    }
+
     public function build(): Config
     {
         return new Config(
@@ -166,7 +174,8 @@ class ConfigBuilder
             $this->databasesOnly,
             $this->tableCacheSize,
             $this->custom,
-            $this->heartbeatPeriod
+            $this->heartbeatPeriod,
+            $this->retry
         );
     }
 }

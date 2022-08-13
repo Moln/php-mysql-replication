@@ -53,10 +53,10 @@ abstract class BaseTest extends TestCase
         parent::setUp();
 
         $this->configBuilder = (new ConfigBuilder())
-            ->withUser('pma')
-            ->withHost('192.168.80.159')
-            ->withPassword('123456')
+            ->withUser('root')
+            ->withHost('127.0.0.1')
             ->withPort(3306)
+            ->withPassword('root')
             ->withEventsIgnore([ConstEventType::GTID_LOG_EVENT]);
 
         $this->connect();

@@ -22,10 +22,11 @@ BinLogBootstrap::clear();
  */
 $binLogStream = new MySQLReplicationFactory(
     BinLogBootstrap::startFromPosition(new ConfigBuilder())
-        ->withUser('pma')
-        ->withHost('192.168.80.159')
+        ->withUser('root')
+        ->withHost('127.0.0.1')
         ->withPort(3306)
-        ->withPassword('123456')
+        ->withPassword('root')
+        ->withRetry(3)
         ->build(),
     null, null, null, null,
     $logger
@@ -72,13 +73,13 @@ class BinLogBootstrap
     private static function getFileAndPath(): string
     {
         if (null === self::$fileAndPath) {
-            self::$fileAndPath = sys_get_temp_dir() . '/bin-log-replicator-last-position';
+            self::$fileAndPath = '/tmp/bin-log-replicator-last-position';
         }
         return self::$fileAndPath;
     }
 
     public static function clear() {
-        unlink(self::getFileAndPath());
+        file_exists(self::getFileAndPath()) && unlink(self::getFileAndPath());
     }
 
     /**
