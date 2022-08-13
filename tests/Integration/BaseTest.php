@@ -55,8 +55,8 @@ abstract class BaseTest extends TestCase
         $this->configBuilder = (new ConfigBuilder())
             ->withUser('root')
             ->withHost('127.0.0.1')
-            ->withPassword('root')
             ->withPort(3306)
+            ->withPassword('root')
             ->withEventsIgnore([ConstEventType::GTID_LOG_EVENT]);
 
         $this->connect();

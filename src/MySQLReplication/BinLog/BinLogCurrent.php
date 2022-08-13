@@ -10,11 +10,11 @@ class BinLogCurrent implements JsonSerializable
     /**
      * @var int
      */
-    private $binLogPosition;
+    private $binLogPosition = 0;
     /**
      * @var string
      */
-    private $binFileName;
+    private $binFileName = '';
     /**
      * @var string
      */

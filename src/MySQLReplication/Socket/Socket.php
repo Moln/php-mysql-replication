@@ -9,15 +9,21 @@ class Socket implements SocketInterface
 
     public function __destruct()
     {
+        $this->close();
+    }
+
+    public function close(): void
+    {
         if ($this->isConnected()) {
             socket_shutdown($this->socket);
             socket_close($this->socket);
         }
+        $this->socket = null;
     }
 
     public function isConnected(): bool
     {
-        return is_resource($this->socket);
+        return is_resource($this->socket) || $this->socket instanceof \Socket;
     }
 
     public function connectToStream(string $host, int $port): void

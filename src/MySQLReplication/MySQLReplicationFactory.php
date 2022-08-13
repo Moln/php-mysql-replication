@@ -23,6 +23,8 @@ use MySQLReplication\Repository\RepositoryInterface;
 use MySQLReplication\Socket\Socket;
 use MySQLReplication\Socket\SocketException;
 use MySQLReplication\Socket\SocketInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -35,6 +37,18 @@ class MySQLReplicationFactory
     private $eventDispatcher;
     private $event;
     private $binLogServerConnect;
+    /**
+     * @var Config
+     */
+    private $config;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+    /**
+     * @var SocketInterface
+     */
+    private $socket;
 
     /**
      * @throws BinLogException
@@ -45,11 +59,14 @@ class MySQLReplicationFactory
      */
     public function __construct(
         Config $config,
-        RepositoryInterface $repository = null,
-        CacheInterface $cache = null,
-        EventDispatcherInterface $eventDispatcher = null,
-        SocketInterface $socket = null
+        ?RepositoryInterface $repository = null,
+        ?CacheInterface $cache = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
+        ?SocketInterface $socket = null,
+        ?LoggerInterface $logger = null
     ) {
+        $this->config = $config;
+        $this->logger = $logger ?? new NullLogger();
         $config->validate();
 
         if (null === $repository) {
@@ -92,6 +109,15 @@ class MySQLReplicationFactory
             $this->eventDispatcher,
             $cache
         );
+
+        $this->socket = $socket;
+        $this->connect();
+    }
+
+    public function connect()
+    {
+        $this->event->connect();
+        $this->logger->info("[MysqlReplication] Connected.");
     }
 
     public function getBinLogServerInfo(): BinLogServerInfo
@@ -124,8 +150,38 @@ class MySQLReplicationFactory
      */
     public function run(): void
     {
+        $retryNum = $this->config->getRetry();
         while (1) {
-            $this->consume();
+            if (! $this->socket->isConnected()) {
+                try {
+                    if ($retryNum) {
+                        $retryNum--;
+                        $this->connect();
+                        $retryNum = $this->config->getRetry();
+                    } else {
+                        break;
+                    }
+                } catch (\Throwable $e) {
+                    $this->logger->warning("[MysqlReplication] Connect error:" . $e->getMessage(), ['exception' => $e]);
+                    if (method_exists($this->socket, 'close')) {
+                        $this->socket->close();
+                    }
+                    sleep(1);
+                    continue;
+                }
+            }
+
+            try {
+                while (1) {
+                    $this->consume();
+                }
+            } catch (SocketException $e) {
+                $this->logger->warning("[MysqlReplication] Connection lost: " . $e->getMessage(), ['exception' => $e]);
+
+                if (method_exists($this->socket, 'close')) {
+                    $this->socket->close();
+                }
+            }
         }
     }
 

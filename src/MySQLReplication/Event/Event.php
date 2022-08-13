@@ -6,7 +6,6 @@ namespace MySQLReplication\Event;
 use MySQLReplication\BinaryDataReader\BinaryDataReader;
 use MySQLReplication\BinaryDataReader\BinaryDataReaderException;
 use MySQLReplication\BinLog\BinLogException;
-use MySQLReplication\BinLog\BinLogServerInfo;
 use MySQLReplication\BinLog\BinLogSocketConnect;
 use MySQLReplication\Config\Config;
 use MySQLReplication\Definitions\ConstEventType;
@@ -35,7 +34,6 @@ class Event
      * @var Config
      */
     private $config;
-    private $binLogServerInfo;
 
     public function __construct(
         Config $config,
@@ -45,11 +43,15 @@ class Event
         CacheInterface $cache
     ) {
         $this->config = $config;
-        $this->binLogServerInfo = $binLogSocketConnect->getBinLogServerInfo();
         $this->binLogSocketConnect = $binLogSocketConnect;
         $this->rowEventFactory = $rowEventFactory;
         $this->eventDispatcher = $eventDispatcher;
         $this->cache = $cache;
+    }
+
+    public function connect(): void
+    {
+        $this->binLogSocketConnect->connect();
     }
 
     /**
@@ -62,6 +64,7 @@ class Event
      */
     public function consume(): void
     {
+        $binLogServerInfo = $this->binLogSocketConnect->getBinLogServerInfo();
         $binaryDataReader = new BinaryDataReader($this->binLogSocketConnect->getResponse());
 
         // check EOF_Packet -> https://dev.mysql.com/doc/internals/en/packet-EOF_Packet.html
@@ -80,7 +83,7 @@ class Event
             $eventDTO = $this->rowEventFactory->makeRowEvent($binaryDataReader, $eventInfo)->makeTableMapDTO();
         } else if (ConstEventType::ROTATE_EVENT === $eventInfo->getType()) {
             $this->cache->clear();
-            $eventDTO = (new RotateEvent($this->binLogServerInfo, $eventInfo, $binaryDataReader))->makeRotateEventDTO();
+            $eventDTO = (new RotateEvent($binLogServerInfo, $eventInfo, $binaryDataReader))->makeRotateEventDTO();
         } else if (ConstEventType::GTID_LOG_EVENT === $eventInfo->getType()) {
             $eventDTO = (new GtidEvent($eventInfo, $binaryDataReader))->makeGTIDLogDTO();
         } else if (ConstEventType::HEARTBEAT_LOG_EVENT === $eventInfo->getType()) {
@@ -127,7 +130,8 @@ class Event
 
     private function filterDummyMariaDbEvents(QueryDTO $queryDTO): ?QueryDTO
     {
-        if ($this->binLogServerInfo->isMariaDb() && false !== strpos($queryDTO->getQuery(), self::MARIADB_DUMMY_QUERY)) {
+        if ($this->binLogSocketConnect->getBinLogServerInfo()->isMariaDb() &&
+            false !== strpos($queryDTO->getQuery(), self::MARIADB_DUMMY_QUERY)) {
             return null;
         }
 
