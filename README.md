@@ -1,10 +1,10 @@
 php-mysql-replication
 =========
 [![PHP Tests](https://github.com/Moln/php-mysql-replication/actions/workflows/tests.yml/badge.svg)](https://github.com/Moln/php-mysql-replication/actions/workflows/tests.yml)
-[![Latest Stable Version](https://poser.pugx.org/moln/php-mysql-replication/v/stable)](https://packagist.org/packages/moln/php-mysql-replication) [![Total Downloads](https://poser.pugx.org/moln/php-mysql-replication/downloads)](https://packagist.org/packages/moln/php-mysql-replication) [![Latest Unstable Version](https://poser.pugx.org/moln/php-mysql-replication/v/unstable)](https://packagist.org/packages/moln/php-mysql-replication) 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/4a0e49d4-3802-41d3-bb32-0a8194d0fd4d/mini.png)](https://insight.sensiolabs.com/projects/4a0e49d4-3802-41d3-bb32-0a8194d0fd4d) [![License](https://poser.pugx.org/moln/php-mysql-replication/license)](https://packagist.org/packages/moln/php-mysql-replication)
+[![Latest Stable Version](https://poser.pugx.org/moln/php-mysql-replication/v/stable)](https://packagist.org/packages/moln/php-mysql-replication) [![Total Downloads](https://poser.pugx.org/moln/php-mysql-replication/downloads)](https://packagist.org/packages/moln/php-mysql-replication) 
+[![License](https://poser.pugx.org/moln/php-mysql-replication/license)](https://packagist.org/packages/moln/php-mysql-replication)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/moln/php-mysql-replication/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/moln/php-mysql-replication/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/moln/php-mysql-replication/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/moln/php-mysql-replication/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Moln/php-mysql-replication/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Moln/php-mysql-replication/?branch=master)
 
 Pure PHP Implementation of MySQL replication protocol. This allow you to receive event like insert, update, delete with their data and raw SQL queries.
 
@@ -12,8 +12,16 @@ Based on a great work of creators：https://github.com/noplay/python-mysql-repli
 
 --------------------------------------------------
 
-**Note:** Resolve [krowinski/php-mysql-replication#94](https://github.com/krowinski/php-mysql-replication/issues/94),  change static config properties to non-static.
+**Note:** Resolve these issues:
 
+- Resolve [krowinski/php-mysql-replication#94](https://github.com/krowinski/php-mysql-replication/issues/94),  change static config properties to non-static.
+- Add retry feature.
+  ```php
+  (new ConfigBuilder())
+    ->withRetry(-1) // Retry always.
+    ->withRetry(0)  // Disable retry feature. (Default)
+    ->withRetry(2)  // Retry twice.
+  ```
 --------------------------------------------------
 
 
