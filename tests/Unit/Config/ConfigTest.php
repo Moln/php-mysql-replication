@@ -93,6 +93,9 @@ class ConfigTest extends BaseTest
 
         $config = (new ConfigBuilder())->withDatabasesOnly(['foo'])->build();
         self::assertTrue($config->checkDataBasesOnly('bar'));
+
+        $config = (new ConfigBuilder())->withDatabasesOnly(['foo_.*'])->build();
+        self::assertFalse($config->checkDataBasesOnly('foo_123'));
     }
 
     /**
@@ -111,6 +114,9 @@ class ConfigTest extends BaseTest
 
         $config = (new ConfigBuilder())->withTablesOnly(['foo'])->build();
         self::assertTrue($config->checkTablesOnly('bar'));
+
+        $config = (new ConfigBuilder())->withTablesOnly(['foo_.*'])->build();
+        self::assertFalse($config->checkDataBasesOnly('foo_123'));
     }
 
     /**

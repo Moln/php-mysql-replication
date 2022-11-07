@@ -177,7 +177,7 @@ class Config implements JsonSerializable
 
     public function checkDataBasesOnly(string $database): bool
     {
-        return [] !== $this->getDatabasesOnly() && !in_array($database, $this->getDatabasesOnly(), true);
+        return [] !== $this->getDatabasesOnly() && !self::matchNames($database, $this->getDatabasesOnly());
     }
 
     public function getDatabasesOnly(): array
@@ -187,7 +187,18 @@ class Config implements JsonSerializable
 
     public function checkTablesOnly(string $table): bool
     {
-        return [] !== $this->getTablesOnly() && !in_array($table, $this->getTablesOnly(), true);
+        return [] !== $this->getTablesOnly() && !self::matchNames($table, $this->getTablesOnly());
+    }
+
+    private static function matchNames(string $subject, array $names): bool
+    {
+        foreach ($names as $name) {
+            if (preg_match("/$name/", $subject)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getTablesOnly(): array
