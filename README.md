@@ -14,6 +14,7 @@ Based on a great work of creators：https://github.com/noplay/python-mysql-repli
 
 **Note:** Resolve these issues:
 
+- Add regular expression matching support for `DatabasesOnly` or `TablesOnly` of `Config`. 
 - Resolve [krowinski/php-mysql-replication#94](https://github.com/krowinski/php-mysql-replication/issues/94),  change static config properties to non-static.
 - Add retry feature.
   ```php
