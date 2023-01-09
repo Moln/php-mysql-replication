@@ -5,9 +5,12 @@ namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\EventInfo;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class GTIDLogDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $commit;
     private $gtid;
     private $type = ConstEventsNames::GTID;
@@ -53,10 +56,5 @@ class GTIDLogDTO extends EventDTO
             'Event size: ' . $this->eventInfo->getSize() . PHP_EOL .
             'Commit: ' . var_export($this->commit, true) . PHP_EOL .
             'GTID NEXT: ' . $this->gtid . PHP_EOL;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Definitions\ConstEventsNames;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class FormatDescriptionEventDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $type = ConstEventsNames::FORMAT_DESCRIPTION;
 
     public function getType(): string
@@ -21,10 +24,5 @@ class FormatDescriptionEventDTO extends EventDTO
             'Date: ' . $this->eventInfo->getDateTime() . PHP_EOL .
             'Log position: ' . $this->eventInfo->getPos() . PHP_EOL .
             'Event size: ' . $this->eventInfo->getSize() . PHP_EOL;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

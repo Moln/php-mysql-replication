@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace MySQLReplication\BinLog;
 
 use JsonSerializable;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class BinLogCurrent implements JsonSerializable
 {
+    use JsonSerializableTrait;
+
     /**
      * @var int
      */
@@ -62,10 +65,5 @@ class BinLogCurrent implements JsonSerializable
     public function setMariaDbGtid(string $mariaDbGtid): void
     {
         $this->mariaDbGtid = $mariaDbGtid;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

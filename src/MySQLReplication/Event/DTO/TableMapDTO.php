@@ -6,9 +6,12 @@ namespace MySQLReplication\Event\DTO;
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\EventInfo;
 use MySQLReplication\Event\RowEvent\TableMap;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class TableMapDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $type = ConstEventsNames::TABLE_MAP;
     private $tableMap;
 
@@ -37,11 +40,6 @@ class TableMapDTO extends EventDTO
     public function getType(): string
     {
         return $this->type;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     public function getTableMap(): TableMap

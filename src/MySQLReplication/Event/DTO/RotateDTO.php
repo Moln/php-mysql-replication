@@ -5,9 +5,12 @@ namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\EventInfo;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class RotateDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $position;
     private $nextBinlog;
     private $type = ConstEventsNames::ROTATE;
@@ -47,10 +50,5 @@ class RotateDTO extends EventDTO
             'Event size: ' . $this->eventInfo->getSize() . PHP_EOL .
             'Binlog position: ' . $this->position . PHP_EOL .
             'Binlog filename: ' . $this->nextBinlog . PHP_EOL;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

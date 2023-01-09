@@ -5,9 +5,12 @@ namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\EventInfo;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class XidDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $type = ConstEventsNames::XID;
     private $xid;
 
@@ -38,10 +41,5 @@ class XidDTO extends EventDTO
     public function getType(): string
     {
         return $this->type;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

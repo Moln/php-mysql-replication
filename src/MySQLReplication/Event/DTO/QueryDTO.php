@@ -5,9 +5,12 @@ namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\EventInfo;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class QueryDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $executionTime;
     private $query;
     private $database;
@@ -56,10 +59,5 @@ class QueryDTO extends EventDTO
             'Database: ' . $this->database . PHP_EOL .
             'Execution time: ' . $this->executionTime . PHP_EOL .
             'Query: ' . $this->query . PHP_EOL;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace MySQLReplication\Config;
 
 use JsonSerializable;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class Config implements JsonSerializable
 {
+    use JsonSerializableTrait;
+
     private $user;
     private $host;
     private $port;
@@ -237,10 +240,5 @@ class Config implements JsonSerializable
     public function getRetry(): int
     {
         return $this->retry;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

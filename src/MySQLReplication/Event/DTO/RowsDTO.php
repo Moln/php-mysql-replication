@@ -5,9 +5,12 @@ namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Event\EventInfo;
 use MySQLReplication\Event\RowEvent\TableMap;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 abstract class RowsDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $values;
     private $changedRows;
     private $tableMap;
@@ -51,10 +54,5 @@ abstract class RowsDTO extends EventDTO
             'Affected columns: ' . $this->tableMap->getColumnsAmount() . PHP_EOL .
             'Changed rows: ' . $this->changedRows . PHP_EOL .
             'Values: ' . print_r($this->values, true) . PHP_EOL;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

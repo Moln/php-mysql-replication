@@ -5,9 +5,12 @@ namespace MySQLReplication\Event;
 
 use JsonSerializable;
 use MySQLReplication\BinLog\BinLogCurrent;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class EventInfo implements JsonSerializable
 {
+    use JsonSerializableTrait;
+
     private $timestamp;
     private $type;
     private $id;
@@ -95,10 +98,5 @@ class EventInfo implements JsonSerializable
     public function getFlag(): int
     {
         return $this->flag;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

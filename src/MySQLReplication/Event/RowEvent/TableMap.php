@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace MySQLReplication\Event\RowEvent;
 
 use JsonSerializable;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class TableMap implements JsonSerializable
 {
+    use JsonSerializableTrait;
+
     private $database;
     private $table;
     private $tableId;
@@ -53,10 +56,5 @@ class TableMap implements JsonSerializable
     public function getColumnDTOCollection(): ColumnDTOCollection
     {
         return $this->columnDTOCollection;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

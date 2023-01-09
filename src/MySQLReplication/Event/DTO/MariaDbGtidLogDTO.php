@@ -5,9 +5,12 @@ namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\EventInfo;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class MariaDbGtidLogDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     private $type = ConstEventsNames::MARIADB_GTID;
     private $flag;
     private $domainId;
@@ -42,12 +45,6 @@ class MariaDbGtidLogDTO extends EventDTO
     public function getType(): string
     {
         return $this->type;
-    }
-
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     public function getFlag(): int

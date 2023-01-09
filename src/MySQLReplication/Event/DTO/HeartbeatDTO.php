@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace MySQLReplication\Event\DTO;
 
 use MySQLReplication\Definitions\ConstEventsNames;
+use MySQLReplication\Util\JsonSerializableTrait;
 
 class HeartbeatDTO extends EventDTO
 {
+    use JsonSerializableTrait;
+
     protected $type = ConstEventsNames::HEARTBEAT;
 
     public function __toString(): string
@@ -21,10 +24,5 @@ class HeartbeatDTO extends EventDTO
     public function getType(): string
     {
         return $this->type;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

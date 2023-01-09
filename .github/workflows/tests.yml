@@ -37,6 +37,7 @@ jobs:
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
+        ini-values: error_reporting=E_ALL, display_errors=On
         with:
           php-version: ${{ matrix.php }}
           coverage: xdebug
