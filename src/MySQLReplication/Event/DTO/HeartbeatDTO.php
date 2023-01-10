@@ -23,6 +23,7 @@ class HeartbeatDTO extends EventDTO
         return $this->type;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);

@@ -239,6 +239,7 @@ class Config implements JsonSerializable
         return $this->retry;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);

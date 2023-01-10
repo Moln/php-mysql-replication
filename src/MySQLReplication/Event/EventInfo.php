@@ -97,6 +97,7 @@ class EventInfo implements JsonSerializable
         return $this->flag;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);
