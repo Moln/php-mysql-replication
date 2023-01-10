@@ -70,7 +70,7 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          composer require php-coveralls/php-coveralls --dev -W
+          composer require "php-coveralls/php-coveralls:^2" --dev -W
           ls ./vendor/bin
           ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
           ./vendor/bin/php-coveralls -v
