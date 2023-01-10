@@ -53,6 +53,7 @@ abstract class RowsDTO extends EventDTO
             'Values: ' . print_r($this->values, true) . PHP_EOL;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);

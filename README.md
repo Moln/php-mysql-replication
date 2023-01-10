@@ -4,7 +4,7 @@ php-mysql-replication
 [![Latest Stable Version](https://poser.pugx.org/moln/php-mysql-replication/v/stable)](https://packagist.org/packages/moln/php-mysql-replication) [![Total Downloads](https://poser.pugx.org/moln/php-mysql-replication/downloads)](https://packagist.org/packages/moln/php-mysql-replication) 
 [![License](https://poser.pugx.org/moln/php-mysql-replication/license)](https://packagist.org/packages/moln/php-mysql-replication)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/moln/php-mysql-replication/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/moln/php-mysql-replication/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/Moln/php-mysql-replication/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Moln/php-mysql-replication/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Moln/php-mysql-replication/badge.svg?branch=master)](https://coveralls.io/github/Moln/php-mysql-replication?branch=master)
 
 Pure PHP Implementation of MySQL replication protocol. This allow you to receive event like insert, update, delete with their data and raw SQL queries.
 
@@ -23,6 +23,7 @@ Based on a great work of creators：https://github.com/noplay/python-mysql-repli
     ->withRetry(0)  // Disable retry feature. (Default)
     ->withRetry(2)  // Retry twice.
   ```
+- PHP 8.1,8.2 supports.
 --------------------------------------------------
 
 

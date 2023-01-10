@@ -71,46 +71,55 @@ class Config implements JsonSerializable
      */
     public function validate(): void
     {
-        if (!empty($this->host)) {
+        if (! empty($this->host)) {
             $ip = gethostbyname($this->host);
             if (false === filter_var($ip, FILTER_VALIDATE_IP)) {
                 throw new ConfigException(ConfigException::IP_ERROR_MESSAGE, ConfigException::IP_ERROR_CODE);
             }
         }
-        if (!empty($this->port) && false === filter_var(
-                $this->port, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]
-            )) {
+        if (! empty($this->port) && false === filter_var(
+            $this->port,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 0]]
+        )) {
             throw new ConfigException(ConfigException::PORT_ERROR_MESSAGE, ConfigException::PORT_ERROR_CODE);
         }
-        if (!empty($this->gtid)) {
+        if (! empty($this->gtid)) {
             foreach (explode(',', $this->gtid) as $gtid) {
-                if (!(bool)preg_match(
-                    '/^([0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})((?::[0-9-]+)+)$/', $gtid, $matches
+                if (! (bool)preg_match(
+                    '/^([0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})((?::[0-9-]+)+)$/',
+                    $gtid,
+                    $matches
                 )) {
                     throw new ConfigException(ConfigException::GTID_ERROR_MESSAGE, ConfigException::GTID_ERROR_CODE);
                 }
             }
         }
-        if (!empty($this->slaveId) && false === filter_var(
-                $this->slaveId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]
-            )) {
+        if (! empty($this->slaveId) && false === filter_var(
+            $this->slaveId,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 0]]
+        )) {
             throw new ConfigException(ConfigException::SLAVE_ID_ERROR_MESSAGE, ConfigException::SLAVE_ID_ERROR_CODE);
         }
         if (false === filter_var($this->binLogPosition, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])) {
             throw new ConfigException(
-                ConfigException::BIN_LOG_FILE_POSITION_ERROR_MESSAGE, ConfigException::BIN_LOG_FILE_POSITION_ERROR_CODE
+                ConfigException::BIN_LOG_FILE_POSITION_ERROR_MESSAGE,
+                ConfigException::BIN_LOG_FILE_POSITION_ERROR_CODE
             );
         }
         if (false === filter_var($this->tableCacheSize, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])) {
             throw new ConfigException(
-                ConfigException::TABLE_CACHE_SIZE_ERROR_MESSAGE, ConfigException::TABLE_CACHE_SIZE_ERROR_CODE
+                ConfigException::TABLE_CACHE_SIZE_ERROR_MESSAGE,
+                ConfigException::TABLE_CACHE_SIZE_ERROR_CODE
             );
         }
         if (0.0 !== $this->heartbeatPeriod && false === (
                 $this->heartbeatPeriod >= 0.001 && $this->heartbeatPeriod <= 4294967.0
             )) {
             throw new ConfigException(
-                ConfigException::HEARTBEAT_PERIOD_ERROR_MESSAGE, ConfigException::HEARTBEAT_PERIOD_ERROR_CODE
+                ConfigException::HEARTBEAT_PERIOD_ERROR_MESSAGE,
+                ConfigException::HEARTBEAT_PERIOD_ERROR_CODE
             );
         }
     }
@@ -177,7 +186,7 @@ class Config implements JsonSerializable
 
     public function checkDataBasesOnly(string $database): bool
     {
-        return [] !== $this->getDatabasesOnly() && !self::matchNames($database, $this->getDatabasesOnly());
+        return [] !== $this->getDatabasesOnly() && ! self::matchNames($database, $this->getDatabasesOnly());
     }
 
     public function getDatabasesOnly(): array
@@ -187,7 +196,7 @@ class Config implements JsonSerializable
 
     public function checkTablesOnly(string $table): bool
     {
-        return [] !== $this->getTablesOnly() && !self::matchNames($table, $this->getTablesOnly());
+        return [] !== $this->getTablesOnly() && ! self::matchNames($table, $this->getTablesOnly());
     }
 
     private static function matchNames(string $subject, array $names): bool
@@ -208,7 +217,7 @@ class Config implements JsonSerializable
 
     public function checkEvent(int $type): bool
     {
-        if ([] !== $this->getEventsOnly() && !in_array($type, $this->getEventsOnly(), true)) {
+        if ([] !== $this->getEventsOnly() && ! in_array($type, $this->getEventsOnly(), true)) {
             return false;
         }
 
@@ -239,6 +248,7 @@ class Config implements JsonSerializable
         return $this->retry;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);

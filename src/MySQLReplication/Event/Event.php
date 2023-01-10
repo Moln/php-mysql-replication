@@ -81,33 +81,33 @@ class Event
         // always parse table map event but propagate when needed (we need this for creating table cache)
         if (ConstEventType::TABLE_MAP_EVENT === $eventInfo->getType()) {
             $eventDTO = $this->rowEventFactory->makeRowEvent($binaryDataReader, $eventInfo)->makeTableMapDTO();
-        } else if (ConstEventType::ROTATE_EVENT === $eventInfo->getType()) {
+        } elseif (ConstEventType::ROTATE_EVENT === $eventInfo->getType()) {
             $this->cache->clear();
             $eventDTO = (new RotateEvent($binLogServerInfo, $eventInfo, $binaryDataReader))->makeRotateEventDTO();
-        } else if (ConstEventType::GTID_LOG_EVENT === $eventInfo->getType()) {
+        } elseif (ConstEventType::GTID_LOG_EVENT === $eventInfo->getType()) {
             $eventDTO = (new GtidEvent($eventInfo, $binaryDataReader))->makeGTIDLogDTO();
-        } else if (ConstEventType::HEARTBEAT_LOG_EVENT === $eventInfo->getType()) {
+        } elseif (ConstEventType::HEARTBEAT_LOG_EVENT === $eventInfo->getType()) {
             $eventDTO = new HeartbeatDTO($eventInfo);
-        } else if (ConstEventType::MARIA_GTID_EVENT === $eventInfo->getType()) {
+        } elseif (ConstEventType::MARIA_GTID_EVENT === $eventInfo->getType()) {
             $eventDTO = (new MariaDbGtidEvent($eventInfo, $binaryDataReader))->makeMariaDbGTIDLogDTO();
         }
 
         // check for ignore and permitted events
-        if (!$this->config->checkEvent($eventInfo->getType())) {
+        if (! $this->config->checkEvent($eventInfo->getType())) {
             return;
         }
 
         if (in_array($eventInfo->getType(), [ConstEventType::UPDATE_ROWS_EVENT_V1, ConstEventType::UPDATE_ROWS_EVENT_V2], true)) {
             $eventDTO = $this->rowEventFactory->makeRowEvent($binaryDataReader, $eventInfo)->makeUpdateRowsDTO();
-        } else if (in_array($eventInfo->getType(), [ConstEventType::WRITE_ROWS_EVENT_V1, ConstEventType::WRITE_ROWS_EVENT_V2], true)) {
+        } elseif (in_array($eventInfo->getType(), [ConstEventType::WRITE_ROWS_EVENT_V1, ConstEventType::WRITE_ROWS_EVENT_V2], true)) {
             $eventDTO = $this->rowEventFactory->makeRowEvent($binaryDataReader, $eventInfo)->makeWriteRowsDTO();
-        } else if (in_array($eventInfo->getType(), [ConstEventType::DELETE_ROWS_EVENT_V1, ConstEventType::DELETE_ROWS_EVENT_V2], true)) {
+        } elseif (in_array($eventInfo->getType(), [ConstEventType::DELETE_ROWS_EVENT_V1, ConstEventType::DELETE_ROWS_EVENT_V2], true)) {
             $eventDTO = $this->rowEventFactory->makeRowEvent($binaryDataReader, $eventInfo)->makeDeleteRowsDTO();
-        } else if (ConstEventType::XID_EVENT === $eventInfo->getType()) {
+        } elseif (ConstEventType::XID_EVENT === $eventInfo->getType()) {
             $eventDTO = (new XidEvent($eventInfo, $binaryDataReader))->makeXidDTO();
-        } else if (ConstEventType::QUERY_EVENT === $eventInfo->getType()) {
+        } elseif (ConstEventType::QUERY_EVENT === $eventInfo->getType()) {
             $eventDTO = $this->filterDummyMariaDbEvents((new QueryEvent($eventInfo, $binaryDataReader))->makeQueryDTO());
-        } else if (ConstEventType::FORMAT_DESCRIPTION_EVENT === $eventInfo->getType()) {
+        } elseif (ConstEventType::FORMAT_DESCRIPTION_EVENT === $eventInfo->getType()) {
             $eventDTO = new FormatDescriptionEventDTO($eventInfo);
         }
 

@@ -64,6 +64,7 @@ class BinLogCurrent implements JsonSerializable
         $this->mariaDbGtid = $mariaDbGtid;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);

@@ -55,6 +55,7 @@ class TableMap implements JsonSerializable
         return $this->columnDTOCollection;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);

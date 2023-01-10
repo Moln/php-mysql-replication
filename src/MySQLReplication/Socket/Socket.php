@@ -29,7 +29,7 @@ class Socket implements SocketInterface
     public function connectToStream(string $host, int $port): void
     {
         $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        if (!$this->socket) {
+        if (! $this->socket) {
             throw new SocketException(
                 SocketException::SOCKET_UNABLE_TO_CREATE_MESSAGE . $this->getSocketErrorMessage(),
                 SocketException::SOCKET_UNABLE_TO_CREATE_CODE
@@ -38,7 +38,7 @@ class Socket implements SocketInterface
         socket_set_block($this->socket);
         socket_set_option($this->socket, SOL_SOCKET, SO_KEEPALIVE, 1);
 
-        if (!socket_connect($this->socket, $host, $port)) {
+        if (! socket_connect($this->socket, $host, $port)) {
             throw new SocketException($this->getSocketErrorMessage(), $this->getSocketErrorCode());
         }
     }
@@ -73,7 +73,7 @@ class Socket implements SocketInterface
 
     public function writeToSocket(string $data): void
     {
-        if (!socket_write($this->socket, $data, strlen($data))) {
+        if (! socket_write($this->socket, $data, strlen($data))) {
             throw new SocketException(
                 SocketException::SOCKET_UNABLE_TO_WRITE_MESSAGE . $this->getSocketErrorMessage(),
                 SocketException::SOCKET_UNABLE_TO_WRITE_CODE

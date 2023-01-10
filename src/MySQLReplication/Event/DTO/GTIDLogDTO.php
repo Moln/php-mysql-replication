@@ -55,6 +55,7 @@ class GTIDLogDTO extends EventDTO
             'GTID NEXT: ' . $this->gtid . PHP_EOL;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return get_object_vars($this);
