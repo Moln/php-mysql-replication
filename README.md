@@ -23,6 +23,7 @@ Based on a great work of creators：https://github.com/noplay/python-mysql-repli
     ->withRetry(0)  // Disable retry feature. (Default)
     ->withRetry(2)  // Retry twice.
   ```
+- PHP 8.1,8.2 supports.
 --------------------------------------------------
 
 
