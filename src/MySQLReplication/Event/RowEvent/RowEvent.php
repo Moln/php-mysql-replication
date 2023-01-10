@@ -682,7 +682,8 @@ class RowEvent extends EventCommon
         }
 
         $date = DateTime::createFromFormat('YmdHis', $value)->format('Y-m-d H:i:s');
-        if (array_sum(DateTime::getLastErrors()) > 0) {
+        $dateLastErrors = DateTime::getLastErrors();
+        if ($dateLastErrors && array_sum($dateLastErrors) > 0) {
             return null;
         }
 
