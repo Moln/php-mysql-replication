@@ -186,7 +186,7 @@ class ColumnDTO
 
     public function isUnsigned(): bool
     {
-        return !(stripos($this->fieldDTO->getColumnType(), 'unsigned') === false);
+        return ! (stripos($this->fieldDTO->getColumnType(), 'unsigned') === false);
     }
 
     public function isPrimary(): bool

@@ -9,7 +9,7 @@ class GtidEvent extends EventCommon
 {
     public function makeGTIDLogDTO(): GTIDLogDTO
     {
-        $commit_flag = 1 === $this->binaryDataReader->readUInt8();
+        $commitFlag = 1 === $this->binaryDataReader->readUInt8();
         $sid = unpack('H*', $this->binaryDataReader->read(16))[1];
         $gno = $this->binaryDataReader->readUInt64();
 
@@ -19,7 +19,7 @@ class GtidEvent extends EventCommon
 
         return new GTIDLogDTO(
             $this->eventInfo,
-            $commit_flag,
+            $commitFlag,
             $gtid
         );
     }

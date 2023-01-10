@@ -51,7 +51,6 @@ class BinLogSocketConnect
         $this->repository = $repository;
         $this->socket = $socket;
         $this->binLogCurrent = new BinLogCurrent();
-
     }
 
     public function isConnected(): bool
@@ -101,8 +100,8 @@ class BinLogSocketConnect
             }
             $dataLength = unpack('L', $header[0] . $header[1] . $header[2] . chr(0))[1];
             $isMaxDataLength = $dataLength === $this->binaryDataMaxLength;
-            $next_result = $this->socket->readFromSocket($dataLength);
-            $result .= $next_result;
+            $nextResult = $this->socket->readFromSocket($dataLength);
+            $result .= $nextResult;
         }
 
         return $result;
@@ -114,7 +113,7 @@ class BinLogSocketConnect
     private function isWriteSuccessful(string $data): void
     {
         $head = ord($data[0]);
-        if (!in_array($head, $this->packageOkHeader, true)) {
+        if (! in_array($head, $this->packageOkHeader, true)) {
             $errorCode = unpack('v', $data[1] . $data[2])[1];
             $errorMessage = '';
             $packetLength = strlen($data);
@@ -140,8 +139,9 @@ class BinLogSocketConnect
             $data .= chr(0);
         }
         $result = sha1($this->config->getPassword(), true) ^ sha1(
-                $this->binLogServerInfo->getSalt() . sha1(sha1($this->config->getPassword(), true), true), true
-            );
+            $this->binLogServerInfo->getSalt() . sha1(sha1($this->config->getPassword(), true), true),
+            true
+        );
 
         $data = $data . $this->config->getUser() . chr(0) . chr(strlen($result)) . $result;
         $str = pack('L', strlen($data));

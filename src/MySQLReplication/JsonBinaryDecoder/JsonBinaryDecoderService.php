@@ -52,7 +52,7 @@ class JsonBinaryDecoderService
     private $dataLength;
 
     public function __construct(
-        BinaryDataReader $binaryDataReader,
+        BinaryDataReader           $binaryDataReader,
         JsonBinaryDecoderFormatter $jsonBinaryDecoderFormatter
     ) {
         $this->binaryDataReader = $binaryDataReader;
@@ -88,11 +88,11 @@ class JsonBinaryDecoderService
         $results = [];
         if (self::SMALL_OBJECT === $type) {
             $results[self::OBJECT] = $this->parseArrayOrObject(self::OBJECT, self::SMALL_OFFSET_SIZE);
-        } else if (self::LARGE_OBJECT === $type) {
+        } elseif (self::LARGE_OBJECT === $type) {
             $results[self::OBJECT] = $this->parseArrayOrObject(self::OBJECT, self::LARGE_OFFSET_SIZE);
-        } else if (self::SMALL_ARRAY === $type) {
+        } elseif (self::SMALL_ARRAY === $type) {
             $results[self::ARRAY] = $this->parseArrayOrObject(self::ARRAY, self::SMALL_OFFSET_SIZE);
-        } else if (self::LARGE_ARRAY === $type) {
+        } elseif (self::LARGE_ARRAY === $type) {
             $results[self::ARRAY] = $this->parseArrayOrObject(self::ARRAY, self::LARGE_OFFSET_SIZE);
         } else {
             $results[self::SCALAR][] = [
@@ -113,16 +113,15 @@ class JsonBinaryDecoderService
         foreach ($results as $dataType => $entities) {
             if (self::OBJECT === $dataType) {
                 $this->jsonBinaryDecoderFormatter->formatBeginObject();
-            } else if (self::ARRAY === $dataType) {
+            } elseif (self::ARRAY === $dataType) {
                 $this->jsonBinaryDecoderFormatter->formatBeginArray();
             }
 
             foreach ($entities as $i => $entity) {
                 if ($dataType === self::SCALAR) {
-
                     if (null === $entity['value']->getValue()) {
                         $this->jsonBinaryDecoderFormatter->formatValue('null');
-                    } else if (is_bool($entity['value']->getValue())) {
+                    } elseif (is_bool($entity['value']->getValue())) {
                         $this->jsonBinaryDecoderFormatter->formatValueBool($entity['value']->getValue());
                     } else {
                         $this->jsonBinaryDecoderFormatter->formatValue($entity['value']->getValue());
@@ -143,7 +142,7 @@ class JsonBinaryDecoderService
 
             if (self::OBJECT === $dataType) {
                 $this->jsonBinaryDecoderFormatter->formatEndObject();
-            } else if (self::ARRAY === $dataType) {
+            } elseif (self::ARRAY === $dataType) {
                 $this->jsonBinaryDecoderFormatter->formatEndArray();
             }
         }
@@ -277,27 +276,22 @@ class JsonBinaryDecoderService
     {
         if (self::LITERAL === $type) {
             $data = $this->readLiteral();
-        } else if (self::INT16 === $type) {
+        } elseif (self::INT16 === $type) {
             $data = $this->binaryDataReader->readInt16();
-        } else if (self::INT32 === $type) {
+        } elseif (self::INT32 === $type) {
             $data = ($this->binaryDataReader->readInt32());
-        } else if (self::INT64 === $type) {
+        } elseif (self::INT64 === $type) {
             $data = $this->binaryDataReader->readInt64();
-        } else if (self::UINT16 === $type) {
+        } elseif (self::UINT16 === $type) {
             $data = ($this->binaryDataReader->readUInt16());
-        } else if (self::UINT64 === $type) {
+        } elseif (self::UINT64 === $type) {
             $data = ($this->binaryDataReader->readUInt64());
-        } else if (self::DOUBLE === $type) {
+        } elseif (self::DOUBLE === $type) {
             $data = ($this->binaryDataReader->readDouble());
-        } else if (self::STRING === $type) {
+        } elseif (self::STRING === $type) {
             $data = ($this->binaryDataReader->read($this->readVariableInt()));
-        } /**
-         * else if (self::OPAQUE === $type)
-         * {
-         *
-         * }
-         */
-        else {
+        // } else if (self::OPAQUE === $type) {
+        } else {
             throw new JsonBinaryDecoderException(
                 JsonBinaryDecoderException::UNKNOWN_JSON_TYPE_MESSAGE . $type,
                 JsonBinaryDecoderException::UNKNOWN_JSON_TYPE_CODE
@@ -349,11 +343,11 @@ class JsonBinaryDecoderService
         if (false === $jsonBinaryDecoderValue->isIsResolved()) {
             $this->ensureOffset($jsonBinaryDecoderValue->getOffset());
             $this->parseJson($jsonBinaryDecoderValue->getType());
-        } else if (null === $jsonBinaryDecoderValue->getValue()) {
+        } elseif (null === $jsonBinaryDecoderValue->getValue()) {
             $this->jsonBinaryDecoderFormatter->formatValueNull();
-        } else if (is_bool($jsonBinaryDecoderValue->getValue())) {
+        } elseif (is_bool($jsonBinaryDecoderValue->getValue())) {
             $this->jsonBinaryDecoderFormatter->formatValueBool($jsonBinaryDecoderValue->getValue());
-        } else if (is_numeric($jsonBinaryDecoderValue->getValue())) {
+        } elseif (is_numeric($jsonBinaryDecoderValue->getValue())) {
             $this->jsonBinaryDecoderFormatter->formatValueNumeric($jsonBinaryDecoderValue->getValue());
         }
     }

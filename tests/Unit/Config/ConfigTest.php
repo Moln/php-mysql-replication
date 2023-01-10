@@ -188,5 +188,4 @@ class ConfigTest extends BaseTest
         $config = (new ConfigBuilder())->{'with' . strtoupper($configKey)}($configValue)->build();
         $config->validate();
     }
-
 }

@@ -36,8 +36,15 @@ class BinaryDataReader
     public static function pack64bit(int $value): string
     {
         return pack(
-            'C8', ($value >> 0) & 0xFF, ($value >> 8) & 0xFF, ($value >> 16) & 0xFF, ($value >> 24) & 0xFF,
-            ($value >> 32) & 0xFF, ($value >> 40) & 0xFF, ($value >> 48) & 0xFF, ($value >> 56) & 0xFF
+            'C8',
+            ($value >> 0) & 0xFF,
+            ($value >> 8) & 0xFF,
+            ($value >> 16) & 0xFF,
+            ($value >> 24) & 0xFF,
+            ($value >> 32) & 0xFF,
+            ($value >> 40) & 0xFF,
+            ($value >> 48) & 0xFF,
+            ($value >> 56) & 0xFF
         );
     }
 
@@ -282,7 +289,7 @@ class BinaryDataReader
 
     public function isComplete(int $size): bool
     {
-        return !($this->readBytes - 20 < $size);
+        return ! ($this->readBytes - 20 < $size);
     }
 
     public function getBinaryDataLength(): int

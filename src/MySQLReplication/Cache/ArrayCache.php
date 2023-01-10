@@ -6,6 +6,7 @@ namespace MySQLReplication\Cache;
 use Composer\InstalledVersions;
 use Psr\SimpleCache\CacheInterface;
 
+// phpcs:ignoreFile
 if (class_exists(InstalledVersions::class) && version_compare(InstalledVersions::getVersion("psr/simple-cache"), '3.0.0', ">=")) {
     class ArrayCache implements CacheInterface
     {
@@ -64,7 +65,8 @@ if (class_exists(InstalledVersions::class) && version_compare(InstalledVersions:
     }
 }
 
-trait ArrayCacheTrait {
+trait ArrayCacheTrait
+{
     private $tableMapCache = [];
 
     /**

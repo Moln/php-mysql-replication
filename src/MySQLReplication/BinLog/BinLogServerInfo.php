@@ -61,22 +61,21 @@ class BinLogServerInfo
         $i += 2;
 
         //auth_plugin_data_len (1) -- length of the combined auth_plugin_data, if auth_plugin_data_len is > 0
-        $salt_len = ord($data[$i]);
+        $saltLen = ord($data[$i]);
         ++$i;
 
-        $salt_len = max(12, $salt_len - 9);
+        $saltLen = max(12, $saltLen - 9);
 
         $i += 10;
 
         //next salt
-        if ($length >= $i + $salt_len) {
-            for ($j = $i; $j < $i + $salt_len; ++$j) {
+        if ($length >= $i + $saltLen) {
+            for ($j = $i; $j < $i + $saltLen; ++$j) {
                 $serverInfo['salt'] .= $data[$j];
             }
-
         }
         $serverInfo['auth_plugin_name'] = '';
-        $i += $salt_len + 1;
+        $i += $saltLen + 1;
         for ($j = $i; $j < $length - 1; ++$j) {
             $serverInfo['auth_plugin_name'] .= $data[$j];
         }

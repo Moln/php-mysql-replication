@@ -60,3 +60,16 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit --coverage-text
+
+      - name: CS Check
+        if: ${{ matrix.php == '8.2' }}
+        run: ./vendor/bin/phpcs
+
+      - name: Upload coverage to coveralls.io
+        if: ${{ matrix.php == '8.2' }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer require php-coveralls/php-coveralls --dev -q
+          ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+          ./vendor/bin/php-coveralls -v
