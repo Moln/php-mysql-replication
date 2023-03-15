@@ -172,6 +172,9 @@ class BinaryDataReader
         if ($size === self::UNSIGNED_INT56_LENGTH) {
             return $this->readUInt56();
         }
+        if ($size === self::UNSIGNED_INT64_LENGTH) {
+            return intval($this->readUInt64());
+        }
 
         throw new BinaryDataReaderException('$size ' . $size . ' not handled');
     }
