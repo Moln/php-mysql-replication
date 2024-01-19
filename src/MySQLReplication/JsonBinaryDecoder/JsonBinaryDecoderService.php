@@ -251,7 +251,7 @@ class JsonBinaryDecoderService
 
             // In binlog format, JSON arrays are fixed width elements, even though type value can be smaller.
             // In order to properly process this case, we need to move cursor to the next element, which is on position 1 + $valueEntrySize (1 is length of type)
-            if($type === self::UINT16 || $type === self::INT16) {
+            if ($type === self::UINT16 || $type === self::INT16) {
                 $readNextBytes = $valueEntrySize - 2 - 1;
                 $this->binaryDataReader->read($readNextBytes);
             }
