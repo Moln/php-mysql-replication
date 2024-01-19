@@ -76,7 +76,7 @@ class JsonBinaryDecoderService
     {
         // Sometimes, we can insert a NULL JSON even we set the JSON field as NOT NULL.
         // If we meet this case, we can return a 'null' value.
-        if($this->binaryDataReader->getBinaryDataLength() === 0) {
+        if ($this->binaryDataReader->getBinaryDataLength() === 0) {
             return 'null';
         }
         $this->parseJson($this->binaryDataReader->readUInt8());
@@ -251,7 +251,7 @@ class JsonBinaryDecoderService
 
             // In binlog format, JSON arrays are fixed width elements, even though type value can be smaller.
             // In order to properly process this case, we need to move cursor to the next element, which is on position 1 + $valueEntrySize (1 is length of type)
-            if($type === self::UINT16 || $type === self::INT16) {
+            if ($type === self::UINT16 || $type === self::INT16) {
                 $readNextBytes = $valueEntrySize - 2 - 1;
                 $this->binaryDataReader->read($readNextBytes);
             }

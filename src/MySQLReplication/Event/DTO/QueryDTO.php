@@ -19,7 +19,7 @@ class QueryDTO extends EventDTO
         string $database,
         int $executionTime,
         string $query,
-        int $threadId
+        int $threadId = 0
     ) {
         parent::__construct($eventInfo);
 
