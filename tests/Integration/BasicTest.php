@@ -120,6 +120,7 @@ class BasicTest extends BaseTest
         $event = $this->getEvent();
         self::assertInstanceOf(QueryDTO::class, $event);
         self::assertEquals($createExpected, $event->getQuery());
+        self::assertGreaterThan(0, $event->getThreadId());
     }
 
     /**
