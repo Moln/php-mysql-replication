@@ -20,7 +20,7 @@
     "doctrine/dbal": "^3.0",
     "psr/log": "^1.0 | ^2.0 | ^3.0",
     "psr/simple-cache": "^1.0 | ^3.0",
-    "symfony/event-dispatcher": "^3.1|^4.0|^5.0|^6.0"
+    "symfony/event-dispatcher": "^3.1|^4.0|^5.0|^6.0|^7.0"
   },
   "require-dev": {
     "monolog/monolog": "^2.8",
@@ -30,8 +30,8 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Kacper Rowiński",
-      "email": "kacper.rowinski@gmail.com"
+      "name": "Moln Xie",
+      "email": "moln.xie@gmail.com"
     }
   ],
   "autoload": {
