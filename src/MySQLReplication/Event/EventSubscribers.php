@@ -10,6 +10,7 @@ use MySQLReplication\Event\DTO\FormatDescriptionEventDTO;
 use MySQLReplication\Event\DTO\GTIDLogDTO;
 use MySQLReplication\Event\DTO\HeartbeatDTO;
 use MySQLReplication\Event\DTO\MariaDbGtidLogDTO;
+use MySQLReplication\Event\DTO\MariaDbGtidListDTO;
 use MySQLReplication\Event\DTO\QueryDTO;
 use MySQLReplication\Event\DTO\RotateDTO;
 use MySQLReplication\Event\DTO\TableMapDTO;
@@ -32,6 +33,7 @@ class EventSubscribers implements EventSubscriberInterface
             ConstEventsNames::XID => 'onXID',
             ConstEventsNames::WRITE => 'onWrite',
             ConstEventsNames::MARIADB_GTID => 'onMariaDbGtid',
+            ConstEventsNames::MARIADB_GTID_LIST => 'onMariaDbGtidList',
             ConstEventsNames::FORMAT_DESCRIPTION => 'onFormatDescription',
             ConstEventsNames::HEARTBEAT => 'onHeartbeat',
         ];
@@ -82,6 +84,11 @@ class EventSubscribers implements EventSubscriberInterface
     }
 
     public function onMariaDbGtid(MariaDbGtidLogDTO $event): void
+    {
+        $this->allEvents($event);
+    }
+
+    public function onMariaDbGtidList(MariaDbGtidListDTO $event): void
     {
         $this->allEvents($event);
     }

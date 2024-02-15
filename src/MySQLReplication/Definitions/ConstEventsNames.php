@@ -14,6 +14,7 @@ class ConstEventsNames
     public const UPDATE = 'update';
     public const WRITE = 'write';
     public const MARIADB_GTID = 'mariadb gtid';
+    public const MARIADB_GTID_LIST = 'mariadb gtid list';
     public const FORMAT_DESCRIPTION = 'format description';
     public const HEARTBEAT = 'heartbeat';
 }
