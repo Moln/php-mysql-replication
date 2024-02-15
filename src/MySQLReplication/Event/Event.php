@@ -90,6 +90,8 @@ class Event
             $eventDTO = new HeartbeatDTO($eventInfo);
         } elseif (ConstEventType::MARIA_GTID_EVENT === $eventInfo->getType()) {
             $eventDTO = (new MariaDbGtidEvent($eventInfo, $binaryDataReader))->makeMariaDbGTIDLogDTO();
+        } elseif (ConstEventType::MARIA_GTID_LIST_EVENT === $eventInfo->getType()) {
+            $eventDTO = (new MariaDbGtidListEvent($eventInfo, $binaryDataReader))->makeMariaDbGTIDListDTO();
         }
 
         // check for ignore and permitted events
