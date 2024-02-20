@@ -300,7 +300,6 @@ class BinLogSocketConnect
         $data .= $binFileName;
 
         $this->socket->writeToSocket($data);
-        $this->getResponse();
 
         $binLogCurrent->setBinLogPosition($binFilePos);
         $binLogCurrent->setBinFileName($binFileName);

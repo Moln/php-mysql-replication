@@ -401,6 +401,7 @@ class BasicTest extends BaseTest
         $this->connection->executeStatement('USE ' . $this->database);
         $this->connection->executeStatement('SET SESSION sql_mode = \'\';');
 
+        self::assertInstanceOf(RotateDTO::class, $this->getEvent());
         self::assertInstanceOf(FormatDescriptionEventDTO::class, $this->getEvent());
         self::assertInstanceOf(QueryDTO::class, $this->getEvent());
         self::assertInstanceOf(QueryDTO::class, $this->getEvent());
