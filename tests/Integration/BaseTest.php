@@ -12,6 +12,7 @@ use MySQLReplication\Definitions\ConstEventType;
 use MySQLReplication\Event\DTO\EventDTO;
 use MySQLReplication\Event\DTO\FormatDescriptionEventDTO;
 use MySQLReplication\Event\DTO\QueryDTO;
+use MySQLReplication\Event\DTO\RotateDTO;
 use MySQLReplication\Event\DTO\TableMapDTO;
 use MySQLReplication\MySQLReplicationFactory;
 use PHPUnit\Framework\TestCase;
@@ -61,6 +62,7 @@ abstract class BaseTest extends TestCase
 
         $this->connect();
 
+        self::assertInstanceOf(RotateDTO::class, $this->getEvent());
         self::assertInstanceOf(FormatDescriptionEventDTO::class, $this->getEvent());
         self::assertInstanceOf(QueryDTO::class, $this->getEvent());
         self::assertInstanceOf(QueryDTO::class, $this->getEvent());
